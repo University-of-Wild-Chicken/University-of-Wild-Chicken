@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Now - University of Wild Chicken (Burundi)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #d9534f;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+        }
+        input[type="text"], select {
+            padding: 10px;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Apply Now</h1>
+        <form id="applicationForm">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="degree">Degree Type:</label>
+            <select id="degree" name="degree" required>
+                <option value="Bachelor of Whatever You Want">Bachelor of Whatever You Want</option>
+                <option value="Master of Instant Gratification">Master of Instant Gratification</option>
+                <option value="Doctorate of Dubious Distinction">Doctorate of Dubious Distinction</option>
+            </select>
+            
+            <button type="button" onclick="generateDiploma()">Generate Diploma</button>
+        </form>
+    </div>
+    
+    <script>
+        async function generateDiploma() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const name = document.getElementById('name').value;
+            const degree = document.getElementById('degree').value;
+
+            doc.setFontSize(20);
+            doc.text('University of Wild Chicken (Burundi)', 20, 20);
+            doc.setFontSize(16);
+            doc.text(`This certifies that`, 20, 40);
+            doc.setFontSize(24);
+            doc.text(name, 20, 60);
+            doc.setFontSize(16);
+            doc.text(`has successfully completed the degree of`, 20, 80);
+            doc.setFontSize(20);
+            doc.text(degree, 20, 100);
+            doc.setFontSize(14);
+            doc.text(`Given on this day, ${new Date().toLocaleDateString()}`, 20, 120);
+
+            // Add triangular border
+            doc.setLineWidth(0.5);
+            doc.setDrawColor(0, 0, 0);
+            doc.line(10, 10, 200, 10);
+            doc.line(10, 10, 105, 200);
+            doc.line(200, 10, 105, 200);
+
+            // Output as triangular PDF
+            const blob = doc.output('blob');
+            const url = URL.createObjectURL(blob);
+
+            // Create a link to download the PDF
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${name}_diploma.pdf`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
